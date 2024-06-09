@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 
@@ -126,19 +126,66 @@ const ageOptions = {
 };
 
 const Dashboard = () => {
+  const [year, setYear] = useState('2023');
+
+  const handleYearChange = (e) => {
+    setYear(e.target.value);
+    // Update the data based on the selected year
+  };
+
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      <div style={{ marginBottom: '20px' }}>
+      <div style={{ marginBottom: '20px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', borderRadius: '8px' }}>
+        <div style={{ marginBottom: '10px' }}>
+          <label>
+            Year:
+            <select value={year} onChange={handleYearChange} style={{ marginLeft: '10px' }}>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+            </select>
+          </label>
+        </div>
         <Bar data={data} options={options} />
       </div>
-      <div style={{ marginBottom: '20px' }}>
+      <div style={{ marginBottom: '20px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', borderRadius: '8px' }}>
+        <div style={{ marginBottom: '10px' }}>
+          <label>
+            Year:
+            <select value={year} onChange={handleYearChange} style={{ marginLeft: '10px' }}>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+            </select>
+          </label>
+        </div>
         <Bar data={data2} options={options2} />
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-        <div style={{ width: '45%' }}>
+        <div style={{ width: '45%', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', borderRadius: '8px' }}>
+          <div style={{ marginBottom: '10px' }}>
+            <label>
+              Year:
+              <select value={year} onChange={handleYearChange} style={{ marginLeft: '10px' }}>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+              </select>
+            </label>
+          </div>
           <Doughnut data={genderData} options={genderOptions} />
         </div>
-        <div style={{ width: '45%' }}>
+        <div style={{ width: '45%', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', borderRadius: '8px' }}>
+          <div style={{ marginBottom: '10px' }}>
+            <label>
+              Year:
+              <select value={year} onChange={handleYearChange} style={{ marginLeft: '10px' }}>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+              </select>
+            </label>
+          </div>
           <Doughnut data={ageData} options={ageOptions} />
         </div>
       </div>
