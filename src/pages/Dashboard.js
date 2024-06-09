@@ -88,6 +88,14 @@ const options = {
 const options2 = {
   indexAxis: 'y',
   responsive: true,
+  scales: {
+    x: {
+      stacked: true,
+    },
+    y: {
+      stacked: true,
+    },
+  },
   plugins: {
     legend: {
       position: 'bottom',
