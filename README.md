@@ -59,6 +59,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/m
 
 ### Advanced Configuration
 
+`
 return (
     <Box padding={4}>
       <Box display="flex" alignItems="center" marginBottom={4}>
@@ -105,7 +106,7 @@ return (
   );
 };
 
-export default ProductAnalytics;
+export default ProductAnalytics; `
 
 
 
