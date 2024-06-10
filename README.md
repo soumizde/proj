@@ -59,6 +59,151 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/m
 
 ### Advanced Configuration
 
+import React, { useState, useEffect } from 'react';
+import { Bar } from 'react-chartjs-2';
+import {
+  Box,
+  TextField,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
+  Button
+} from '@mui/material';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
+const ProductAnalytics = () => {
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [productTypes, setProductTypes] = useState([]);
+  const [productSubtypes, setProductSubtypes] = useState([]);
+  const [selectedType, setSelectedType] = useState('');
+  const [selectedSubtype, setSelectedSubtype] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    fetchProducts();
+    fetchProductTypes();
+  }, []);
+
+  const fetchProducts = async () => {
+    const data = await fetch('/api/products').then(res => res.json());
+    setProducts(data);
+    setFilteredProducts(data);
+  };
+
+  const fetchProductTypes = async () => {
+    const data = await fetch('/api/productTypes').then(res => res.json());
+    setProductTypes(data);
+  };
+
+  const handleFilterChange = () => {
+    let filtered = products;
+
+    if (selectedType) {
+      filtered = filtered.filter(product => product.type === selectedType);
+      const subtypes = filtered.map(product => product.subtype).filter((value, index, self) => self.indexOf(value) === index);
+      setProductSubtypes(subtypes);
+    } else {
+      setProductSubtypes([]);
+    }
+
+    if (selectedSubtype) {
+      filtered = filtered.filter(product => product.subtype === selectedSubtype);
+    }
+
+    if (searchQuery) {
+      filtered = filtered.filter(product => product.name.toLowerCase().includes(searchQuery.toLowerCase()));
+    }
+
+    setFilteredProducts(filtered);
+  };
+
+  const handleTypeChange = (event) => {
+    setSelectedType(event.target.value);
+    setSelectedSubtype('');
+    handleFilterChange();
+  };
+
+  const handleSubtypeChange = (event) => {
+    setSelectedSubtype(event.target.value);
+    handleFilterChange();
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+    handleFilterChange();
+  };
+
+  const chartData = {
+    labels: filteredProducts.map(product => product.name),
+    datasets: [
+      {
+        label: 'All Products vs All Customers',
+        data: filteredProducts.map(product => product.customers.length),
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  return (
+    <Box padding={4}>
+      <Box display="flex" alignItems="center" marginBottom={4}>
+        <TextField
+          label="Search by Product Name"
+          variant="outlined"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          margin="normal"
+          style={{ marginRight: 16 }}
+        />
+        <FormControl variant="outlined" margin="normal" style={{ minWidth: 120, marginRight: 16 }}>
+          <InputLabel>Type</InputLabel>
+          <Select
+            value={selectedType}
+            onChange={handleTypeChange}
+            label="Type"
+          >
+            <MenuItem value=""><em>None</em></MenuItem>
+            {productTypes.map(type => (
+              <MenuItem key={type} value={type}>{type}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl variant="outlined" margin="normal" style={{ minWidth: 120, marginRight: 16 }} disabled={!selectedType}>
+          <InputLabel>Subtype</InputLabel>
+          <Select
+            value={selectedSubtype}
+            onChange={handleSubtypeChange}
+            label="Subtype"
+          >
+            <MenuItem value=""><em>None</em></MenuItem>
+            {productSubtypes.map(subtype => (
+              <MenuItem key={subtype} value={subtype}>{subtype}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Button variant="contained" color="primary" onClick={handleFilterChange}>
+          Apply Filters
+        </Button>
+      </Box>
+      <Bar data={chartData} />
+    </Box>
+  );
+};
+
+export default ProductAnalytics;
+
+
+
+
+
+
+
 This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
 ### Deployment
