@@ -4,6 +4,9 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
+
+
+
 const data = {
   labels: Array.from({ length: 15 }, (_, i) => `Product ${i + 1}`),
   datasets: [
@@ -85,27 +88,6 @@ const options = {
   },
 };
 
-const options2 = {
-  indexAxis: 'y',
-  responsive: true,
-  scales: {
-    x: {
-      stacked: true,
-    },
-    y: {
-      stacked: true,
-    },
-  },
-  plugins: {
-    legend: {
-      position: 'bottom',
-    },
-    title: {
-      display: true,
-      text: 'Customer Count by State',
-    },
-  },
-};
 
 const genderOptions = {
   responsive: true,
@@ -133,16 +115,64 @@ const ageOptions = {
   },
 };
 
+const Popup = ({ data, onClose }) => {
+  return (
+    <div style={{ position: 'absolute', top: '20%', left: '50%', transform: 'translate(-50%, -50%)', backgroundColor: 'white', padding: '20px', border: '1px solid black', zIndex: 100 }}>
+      <h1>Details for {data.label}</h1>
+      <p>Data Value: {data.value}</p>
+      <button onClick={onClose}>Close</button>
+    </div>
+  );
+};
+
 const Dashboard = () => {
   const [year, setYear] = useState('2023');
+  const [popupInfo, setPopupInfo] = useState(null);
+
+  const handleBarClick = (event, elements, chart) => {
+    if (elements.length === 0) return; // No bar clicked
+    const firstElement = elements[0];
+    const label = chart.data.labels[firstElement.index];
+    const value = chart.data.datasets[firstElement.datasetIndex].data[firstElement.index];
+    setPopupInfo({ label, value });
+  };
+
+  const options2 = {
+    indexAxis: 'y',
+    responsive: true,
+    scales: {
+      x: {
+        stacked: true,
+      },
+      y: {
+        stacked: true,
+      },
+    },
+    plugins: {
+      legend: {
+        position: 'bottom',
+      },
+      title: {
+        display: true,
+        text: 'Customer Count by State',
+      },
+    },
+    onClick: handleBarClick, // Add this line
+  };
 
   const handleYearChange = (e) => {
     setYear(e.target.value);
-    // Update the data based on the selected year
   };
 
+  const closePopup = () => {
+    setPopupInfo(null);
+  };
+
+
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
+    
+    <div style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
+      {popupInfo && <Popup data={popupInfo} onClose={closePopup} />}
       <div style={{ marginBottom: '20px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', borderRadius: '8px' }}>
         <div style={{ marginBottom: '10px' }}>
           <label>

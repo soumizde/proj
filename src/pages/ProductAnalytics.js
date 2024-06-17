@@ -10,7 +10,7 @@ const productSubtypes = {
   'Alternative investments': ['Real estate investments', 'Private equity', 'Hedge funds']
 };
 
-const productCategories = ['Trust', 'Advisory', 'Foreign', 'IRA', 'Non Operating', 'Roll over qualified', 'Retirement account', 'Omnibus'];
+const productCategories = ['Advisory', 'Foreign', 'IRA', 'Non Operating', 'Roll over qualified', 'Retirement account', 'Omnibus'];
 
 const ProductAnalytics = () => {
   const [products, setProducts] = useState([]);
@@ -140,3 +140,4 @@ const ProductAnalytics = () => {
 };
 
 export default ProductAnalytics;
+
