@@ -1,70 +1,138 @@
-# Getting Started with Create React App
+```
+import React, { useState } from 'react';
+import { Line } from 'react-chartjs-2';
+import 'chart.js/auto';
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+// Sample data
+const yearlyTrendData = [
+  { year: '2020', customers: 100 },
+  { year: '2021', customers: 200 },
+  { year: '2022', customers: 300 },
+  { year: '2023', customers: 250 },
+];
 
-## Available Scripts
+const topOccupations = ['Engineer', 'Doctor', 'Teacher'];
+const topRegions = ['California', 'Texas', 'New York'];
 
-In the project directory, you can run:
+const states = [
+  'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia',
+  'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts',
+  'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico',
+  'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina',
+  'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
+];
 
-### `npm start`
+const sourcesOfWealth = [
+  'SavingsFromEarnings', 'BusinessRevenue', 'SalesOfAsset', 'AssociatedPerson', 'SalaryWages', 'Inheritance', 'BusinessOpsIncomeRevenue',
+  'DonationsTrustsOnly', 'SaleOfBusiness', 'SaleOfRealEstate', 'SaleOfAssetorInvestment', 'LegalInsuranceSettlement', 'InvestmentIncome',
+  'RetirementFunds', '401kRollover'
+];
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+const CustomerNavigation = () => {
+  const [filteredCustomers, setFilteredCustomers] = useState([]);
+  const [selectedSource, setSelectedSource] = useState('');
+  const [selectedOccupation, setSelectedOccupation] = useState('');
+  const [selectedRegion, setSelectedRegion] = useState('');
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+  const handleFilter = () => {
+    // Fetch and filter customers based on selectedSource, selectedOccupation, and selectedRegion
+    // This is a placeholder for actual data filtering logic
+    const filtered = []; // Assume this array is filled with filtered data
+    setFilteredCustomers(filtered);
+  };
 
-### `npm test`
+  const chartData = {
+    labels: yearlyTrendData.map(data => data.year),
+    datasets: [
+      {
+        label: 'Yearly Customer Trend',
+        data: yearlyTrendData.map(data => data.customers),
+        fill: false,
+        backgroundColor: 'rgb(75, 192, 192)',
+        borderColor: 'rgba(75, 192, 192, 0.2)',
+      },
+    ],
+  };
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  return (
+    <div>
+      <h2>Customer Navigation</h2>
 
-### `npm run build`
+      <div>
+        <h3>Yearly Customer Trend</h3>
+        <Line data={chartData} />
+      </div>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+      <div>
+        <h3>Top 3 Leading Occupations</h3>
+        <ul>
+          {topOccupations.map((occupation, index) => (
+            <li key={index}>{occupation}</li>
+          ))}
+        </ul>
+      </div>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+      <div>
+        <h3>Top 3 Regions</h3>
+        <ul>
+          {topRegions.map((region, index) => (
+            <li key={index}>{region}</li>
+          ))}
+        </ul>
+      </div>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+      <div>
+        <h3>Filter Customers</h3>
+        <div>
+          <label>
+            Source of Wealth:
+            <select value={selectedSource} onChange={e => setSelectedSource(e.target.value)}>
+              <option value="">Select</option>
+              {sourcesOfWealth.map(source => (
+                <option key={source} value={source}>{source}</option>
+              ))}
+            </select>
+          </label>
+        </div>
 
-### `npm run eject`
+        <div>
+          <label>
+            Occupation:
+            <input
+              type="text"
+              value={selectedOccupation}
+              onChange={e => setSelectedOccupation(e.target.value)}
+              placeholder="Search Occupation"
+            />
+          </label>
+        </div>
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+        <div>
+          <label>
+            Region:
+            <select value={selectedRegion} onChange={e => setSelectedRegion(e.target.value)}>
+              <option value="">Select</option>
+              {states.map(state => (
+                <option key={state} value={state}>{state}</option>
+              ))}
+            </select>
+          </label>
+        </div>
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+        <button onClick={handleFilter}>Filter</button>
+      </div>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+      <div>
+        <h3>Filtered Customers</h3>
+        <p>Total Numbers of Customers in the category: {filteredCustomers.length}</p>
+        <div>
+          <h4>Product Split</h4>
+          {/* Product Split logic to be implemented */}
+        </div>
+      </div>
+    </div>
+  );
+};
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+export default CustomerNavigation;
+```
