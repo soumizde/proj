@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
+import { scaleQuantize } from 'd3-scale';
+import usStatesTopo from './usStatesTopo.json'; // Adjust the path as necessary
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -11,6 +14,33 @@ const productSubtypes = {
 };
 
 const productCategories = ['Advisory', 'Foreign', 'IRA', 'Non Operating', 'Roll over qualified', 'Retirement account', 'Omnibus'];
+
+const stateProductData = {
+  "AL": 60, "AK": 30, "AZ": 88, "AR": 55, "CA": 150,
+  "CO": 92, "CT": 70, "DE": 45, "FL": 120, "GA": 95,
+  "HI": 40, "ID": 52, "IL": 90, "IN": 75, "IA": 65,
+  "KS": 60, "KY": 70, "LA": 80, "ME": 50, "MD": 85,
+  "MA": 100, "MI": 75, "MN": 85, "MS": 55, "MO": 80,
+  "MT": 45, "NE": 50, "NV": 55, "NH": 60, "NJ": 110,
+  "NM": 49, "NY": 160, "NC": 65, "ND": 40, "OH": 70,
+  "OK": 65, "OR": 68, "PA": 85, "RI": 55, "SC": 65,
+  "SD": 40, "TN": 75, "TX": 130, "UT": 61, "VT": 45,
+  "VA": 80, "WA": 80, "WV": 50, "WI": 75, "WY": 40
+};
+
+const colorScale = scaleQuantize()
+  .domain([0, 160])
+  .range([
+    "#ffedea",
+    "#ffcec5",
+    "#ffad9f",
+    "#ff8a75",
+    "#ff5533",
+    "#e2492d",
+    "#be3d26",
+    "#9a311f",
+    "#782618"
+  ]);
 
 const ProductAnalytics = () => {
   const [products, setProducts] = useState([]);
@@ -87,8 +117,30 @@ const ProductAnalytics = () => {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+    <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div style={{ width: "100%", maxWidth: 1150, height: 600, display: 'flex', justifyContent: 'center', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', border: '1px solid #ccc', padding: '10px', marginBottom: '20px' }}>
+        <ComposableMap
+          projection="geoAlbersUsa"
+          projectionConfig={{ scale: 1000 }}
+          style={{ width: "100%", height: "100%" }}
+        >
+          <Geographies geography={usStatesTopo}>
+            {({ geographies }) =>
+              geographies.map(geo => {
+                const cur = stateProductData[geo.properties.STUSPS];
+                return (
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    fill={cur ? colorScale(cur) : "#EEE"}
+                  />
+                );
+              })
+            }
+          </Geographies>
+        </ComposableMap>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', justifyContent: 'center' }}>
         <input
           type="text"
           placeholder="Search by Product Name"
@@ -140,4 +192,3 @@ const ProductAnalytics = () => {
 };
 
 export default ProductAnalytics;
-
