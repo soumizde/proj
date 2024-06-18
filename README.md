@@ -1,138 +1,67 @@
 ```
-import React, { useState } from 'react';
-import { Line } from 'react-chartjs-2';
-import 'chart.js/auto';
+import React from 'react';
+import { Choropleth } from 'react-chartjs-2';
+import { Chart as ChartJS, ChoroplethController, GeoFeature } from 'chartjs-chart-geo';
+import 'chartjs-chart-geo/build/Chart.Geo.min.js';
+import usGeoJson from './usGeoJson'; // Assuming you have the US GeoJSON file
 
-// Sample data
-const yearlyTrendData = [
-  { year: '2020', customers: 100 },
-  { year: '2021', customers: 200 },
-  { year: '2022', customers: 300 },
-  { year: '2023', customers: 250 },
-];
+ChartJS.register(ChoroplethController, GeoFeature);
 
-const topOccupations = ['Engineer', 'Doctor', 'Teacher'];
-const topRegions = ['California', 'Texas', 'New York'];
+const StatewiseHeatmap = () => {
+    // Hardcoded data for the number of products bought in each state
+    const data = [
+        { id: '01', state: 'Alabama', value: 150 },
+        { id: '02', state: 'Alaska', value: 50 },
+        { id: '04', state: 'Arizona', value: 300 },
+        { id: '05', state: 'Arkansas', value: 100 },
+        // Add all other states here
+        { id: '48', state: 'Texas', value: 500 },
+        { id: '49', state: 'Utah', value: 200 },
+        { id: '50', state: 'Vermont', value: 80 },
+        { id: '51', state: 'Virginia', value: 250 },
+        { id: '53', state: 'Washington', value: 400 },
+        { id: '54', state: 'West Virginia', value: 60 },
+        { id: '55', state: 'Wisconsin', value: 350 },
+        { id: '56', state: 'Wyoming', value: 40 }
+    ];
 
-const states = [
-  'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia',
-  'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts',
-  'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico',
-  'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina',
-  'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-];
+    // Preparing the data for the heatmap
+    const chartData = {
+        labels: data.map(d => d.state),
+        datasets: [{
+            label: 'Number of Products Bought',
+            data: data.map(d => ({ feature: usGeoJson.features.find(f => f.id === d.id), value: d.value }))
+        }]
+    };
 
-const sourcesOfWealth = [
-  'SavingsFromEarnings', 'BusinessRevenue', 'SalesOfAsset', 'AssociatedPerson', 'SalaryWages', 'Inheritance', 'BusinessOpsIncomeRevenue',
-  'DonationsTrustsOnly', 'SaleOfBusiness', 'SaleOfRealEstate', 'SaleOfAssetorInvestment', 'LegalInsuranceSettlement', 'InvestmentIncome',
-  'RetirementFunds', '401kRollover'
-];
+    const options = {
+        showOutline: true,
+        showGraticule: false,
+        geo: {
+            colorScale: {
+                display: true,
+                position: 'bottom',
+                quantize: 5,
+                colors: ['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd', '#08519c']
+            }
+        },
+        scales: {
+            xy: {
+                projection: 'albersUsa'
+            }
+        }
+    };
 
-const CustomerNavigation = () => {
-  const [filteredCustomers, setFilteredCustomers] = useState([]);
-  const [selectedSource, setSelectedSource] = useState('');
-  const [selectedOccupation, setSelectedOccupation] = useState('');
-  const [selectedRegion, setSelectedRegion] = useState('');
-
-  const handleFilter = () => {
-    // Fetch and filter customers based on selectedSource, selectedOccupation, and selectedRegion
-    // This is a placeholder for actual data filtering logic
-    const filtered = []; // Assume this array is filled with filtered data
-    setFilteredCustomers(filtered);
-  };
-
-  const chartData = {
-    labels: yearlyTrendData.map(data => data.year),
-    datasets: [
-      {
-        label: 'Yearly Customer Trend',
-        data: yearlyTrendData.map(data => data.customers),
-        fill: false,
-        backgroundColor: 'rgb(75, 192, 192)',
-        borderColor: 'rgba(75, 192, 192, 0.2)',
-      },
-    ],
-  };
-
-  return (
-    <div>
-      <h2>Customer Navigation</h2>
-
-      <div>
-        <h3>Yearly Customer Trend</h3>
-        <Line data={chartData} />
-      </div>
-
-      <div>
-        <h3>Top 3 Leading Occupations</h3>
-        <ul>
-          {topOccupations.map((occupation, index) => (
-            <li key={index}>{occupation}</li>
-          ))}
-        </ul>
-      </div>
-
-      <div>
-        <h3>Top 3 Regions</h3>
-        <ul>
-          {topRegions.map((region, index) => (
-            <li key={index}>{region}</li>
-          ))}
-        </ul>
-      </div>
-
-      <div>
-        <h3>Filter Customers</h3>
+    return (
         <div>
-          <label>
-            Source of Wealth:
-            <select value={selectedSource} onChange={e => setSelectedSource(e.target.value)}>
-              <option value="">Select</option>
-              {sourcesOfWealth.map(source => (
-                <option key={source} value={source}>{source}</option>
-              ))}
-            </select>
-          </label>
+            <h2>Statewise Product Analytics</h2>
+            <Choropleth data={chartData} options={options} />
         </div>
-
-        <div>
-          <label>
-            Occupation:
-            <input
-              type="text"
-              value={selectedOccupation}
-              onChange={e => setSelectedOccupation(e.target.value)}
-              placeholder="Search Occupation"
-            />
-          </label>
-        </div>
-
-        <div>
-          <label>
-            Region:
-            <select value={selectedRegion} onChange={e => setSelectedRegion(e.target.value)}>
-              <option value="">Select</option>
-              {states.map(state => (
-                <option key={state} value={state}>{state}</option>
-              ))}
-            </select>
-          </label>
-        </div>
-
-        <button onClick={handleFilter}>Filter</button>
-      </div>
-
-      <div>
-        <h3>Filtered Customers</h3>
-        <p>Total Numbers of Customers in the category: {filteredCustomers.length}</p>
-        <div>
-          <h4>Product Split</h4>
-          {/* Product Split logic to be implemented */}
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
 
-export default CustomerNavigation;
+export default StatewiseHeatmap;
+
+
+
 ```
