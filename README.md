@@ -7,14 +7,13 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    const handleLogin = async (e) => {
+    const handleLogin = (e) => {
         e.preventDefault();
-        
-        // Mock API call
+
+        // Mock API call or password check
         if (password === 'password123') { // Replace with actual API call logic
-            // Store authenticated status, e.g., in local storage or a context
             localStorage.setItem('authenticated', 'true');
-            navigate('/home'); // Redirect to the homepage
+            navigate('/');
         } else {
             alert('Invalid password');
         }
