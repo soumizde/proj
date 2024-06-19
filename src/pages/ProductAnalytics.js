@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Bar } from 'react-chartjs-2';
+import { Bar, Line, Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import { scaleQuantize } from 'd3-scale';
@@ -41,6 +41,41 @@ const colorScale = scaleQuantize()
     "#9a311f",
     "#782618"
   ]);
+
+const performanceData = {
+  labels: ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022'],
+  datasets: [
+    {
+      label: 'Total Customers',
+      data: [120, 150, 180, 210, 230, 250, 270, 290, 310, 330], // Example data
+      fill: false,
+      borderColor: 'rgb(75, 192, 192)',
+      tension: 0.1
+    }
+  ]
+};
+
+const ageData = {
+  labels: ['18-25', '26-35', '36-45', '46-55', '56+'],
+  datasets: [
+    {
+      label: 'Age Distribution',
+      data: [300, 500, 400, 300, 200], // Example data
+      backgroundColor: ['red', 'orange', 'yellow', 'green', 'blue'],
+    }
+  ]
+};
+
+const genderData = {
+  labels: ['Male', 'Female', 'Other'],
+  datasets: [
+    {
+      label: 'Gender Distribution',
+      data: [700, 800, 100], // Example data
+      backgroundColor: ['blue', 'pink', 'purple'],
+    }
+  ]
+};
 
 const ProductAnalytics = () => {
   const [products, setProducts] = useState([]);
@@ -115,6 +150,10 @@ const ProductAnalytics = () => {
       },
     ],
   };
+
+  const sortedStates = Object.entries(stateProductData).sort((a, b) => b[1] - a[1]);
+  const topThreeStates = sortedStates.slice(0, 3);
+  const bottomThreeStates = sortedStates.slice(-3);
 
   return (
     <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -197,6 +236,17 @@ const ProductAnalytics = () => {
         </button>
       </div>
       <Bar data={chartData} />
+      <Line data={performanceData} />
+      <div>
+        <h3>Top Performing States</h3>
+        {topThreeStates.map(state => <p>{state[0]}: {state[1]}</p>)}
+        <h3>Lowest Performing States</h3>
+        {bottomThreeStates.map(state => <p>{state[0]}: {state[1]}</p>)}
+      </div>
+      <div>
+        <Pie data={ageData} />
+        <Pie data={genderData} />
+      </div>
     </div>
   );
 };
