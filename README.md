@@ -51,4 +51,42 @@ const Login = () => {
 };
 
 export default Login;
+
+
+
+import React from 'react';
+import './App.css';
+import Dashboard from './pages/Dashboard';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Navbar from "./Navbar";
+import CustomerNavigation from "./pages/CustomerNavigation";
+import ProductAnalytics from "./pages/ProductAnalytics";
+import NoPage from "./pages/NoPage";
+import Login from './components/Login';
+
+function App() {
+  const isAuthenticated = localStorage.getItem('authenticated') === 'true';
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        {!isAuthenticated ? (
+          <Route path="*" element={<Login />} />
+        ) : (
+          <Route path="/" element={<Navbar />}>
+            <Route index element={<Dashboard />} />
+            <Route path="customer-navigation" element={<CustomerNavigation />} />
+            <Route path="product-analytics" element={<ProductAnalytics />} />
+            <Route path="*" element={<NoPage />} />
+          </Route>
+        )}
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;
+
+
+
 ```
