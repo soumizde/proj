@@ -118,7 +118,9 @@ const ProductAnalytics = () => {
 
   return (
     <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <div style={{ width: "100%", maxWidth: 1150, height: 600, display: 'flex', justifyContent: 'center', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', border: '1px solid #ccc', padding: '10px', marginBottom: '20px' }}>
+      
+      <div style={{ width: "100%", maxWidth: 1150, height: 600, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', border: '1px solid #ccc', padding: '10px', marginBottom: '20px' }}>
+      <h2 style={{ marginBottom: '20px' }}>State Product Data</h2>
         <ComposableMap
           projection="geoAlbersUsa"
           projectionConfig={{ scale: 1000 }}
@@ -139,6 +141,14 @@ const ProductAnalytics = () => {
             }
           </Geographies>
         </ComposableMap>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+          {colorScale.range().map((color, index) => (
+            <div key={index} style={{ display: 'flex', alignItems: 'center', marginRight: '20px' }}>
+              <div style={{ width: '20px', height: '20px', backgroundColor: color, marginRight: '10px' }} />
+              <span>{index * 20}-{(index + 1) * 20}</span>
+            </div>
+          ))}
+        </div>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', justifyContent: 'center' }}>
         <input
