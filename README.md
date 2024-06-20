@@ -1,4 +1,38 @@
 ```
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+}
+
+.tooltip-container .tooltip-text {
+  visibility: hidden;
+  width: 200px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Adjust this value according to your design */
+  left: 50%;
+  margin-left: -100px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+
+
+
 /* Login.css */
 .login-container {
     display: flex;
