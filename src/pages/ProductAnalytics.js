@@ -84,6 +84,8 @@ const ProductAnalytics = () => {
   const [selectedSubtype, setSelectedSubtype] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [tooltipContent, setTooltipContent] = useState('');
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     fetchProducts();
@@ -158,8 +160,13 @@ const ProductAnalytics = () => {
   return (
     <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       
-      <div style={{ width: "100%", maxWidth: 1150, height: 600, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', border: '1px solid #ccc', padding: '10px', marginBottom: '20px' }}>
+      <div style={{ position: 'relative', width: "100%", maxWidth: 1150, height: 600, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', border: '1px solid #ccc', padding: '10px', marginBottom: '20px' }}>
       <h2 style={{ marginBottom: '20px' }}>State Product Data</h2>
+        {tooltipContent && (
+          <div style={{ position: 'absolute', top: `${tooltipPosition.y}px`, left: `${tooltipPosition.x}px`, padding: '10px', backgroundColor: 'rgba(27, 24, 25, 0.87)', border: '1px solid #ccc', zIndex: 1000, borderRadius:'10px',transform: 'translate(-300%, -210%)', fontSize:'16px', padding: '10px' ,color:'white'}}>
+            {tooltipContent}
+          </div>
+        )}
         <ComposableMap
           projection="geoAlbersUsa"
           projectionConfig={{ scale: 1000 }}
@@ -174,6 +181,14 @@ const ProductAnalytics = () => {
                     key={geo.rsmKey}
                     geography={geo}
                     fill={cur ? colorScale(cur) : "#EEE"}
+                    onMouseEnter={(event) => {
+                      const { STUSPS } = geo.properties;
+                      setTooltipContent(`${STUSPS}: ${stateProductData[STUSPS] || 0}`);
+                      setTooltipPosition({ x: event.clientX, y: event.clientY });
+                    }}
+                    onMouseLeave={() => {
+                      setTooltipContent('');
+                    }}
                   />
                 );
               })
