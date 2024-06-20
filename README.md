@@ -1,4 +1,112 @@
 ```
+
+// src/InfoIcon.js
+import React from 'react';
+import './InfoIcon.css';
+
+const InfoIcon = ({ message }) => {
+  return (
+    <div className="info-icon-container">
+      <span className="info-icon">i</span>
+      <span className="info-tooltip">{message}</span>
+    </div>
+  );
+};
+
+export default InfoIcon;
+
+
+/* src/InfoIcon.css */
+.info-icon-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.info-icon {
+  background-color: #007bff;
+  color: white;
+  border-radius: 50%;
+  padding: 5px;
+  font-size: 14px;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  line-height: 20px; /* Vertically center the text */
+}
+
+.info-tooltip {
+  visibility: hidden;
+  width: 160px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Position the tooltip above the icon */
+  left: 50%;
+  margin-left: -80px; /* Center the tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.info-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%; /* At the bottom of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent; /* Arrow pointing down */
+}
+
+.info-icon-container:hover .info-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+}
+
+.tooltip-container .tooltip-text {
+  visibility: hidden;
+  width: 200px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Adjust this value according to your design */
+  left: 50%;
+  margin-left: -100px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+
+
+
 /* Login.css */
 .login-container {
     display: flex;
