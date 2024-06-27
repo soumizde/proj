@@ -1,5 +1,28 @@
 ```
 
+import React from 'react';
+import './LoginPage.css'; // Optional, if you want to add custom styles
+
+const LoginPage = () => {
+  return (
+    <div className="login-page">
+      <div className="svg-container" dangerouslySetInnerHTML={{ __html: svgContent }} />
+      <button className="login-button">Login</button>
+    </div>
+  );
+};
+
+// SVG content as a JavaScript string
+const svgContent = `
+<svg width="1808" height="552" viewBox="0 0 1808 552" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M93.4614 386.469C133.186 339.807 172.91 316.475 212.636 316.475C272.222 316.475 305.956 353.517 349.604 332.73C393.252 311.943 653.84 166.352 809.198 211.359C970.281 258.025 1141.15 229.213 1321.8 124.923L1706.68 200.772C1510.89 320.849 1377.25 391.462 1305.78 412.611C1067.29 483.179 855.829 453.477 762.319 400.448C638.146 330.029 418.592 452.433 343.441 429.138C268.29 405.843 254.76 38
+</svg>
+`;
+
+export default LoginPage;
+
+
+
 // src/InfoIcon.js
 import React from 'react';
 import './InfoIcon.css';
