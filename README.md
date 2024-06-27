@@ -1,5 +1,55 @@
 ```
 
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.image-container {
+  margin-bottom: 20px;
+}
+
+.home-image {
+  width: 150px;
+  height: 150px;
+}
+
+.login-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #0056b3;
+}
+
+
+import React from 'react';
+import './Home.css';
+import { ReactComponent as HomeSVG } from './home.svg';
+
+const Home = () => {
+  return (
+    <div className="home-container">
+      <div className="image-container">
+        <HomeSVG className="home-image" />
+      </div>
+      <button className="login-button">Login</button>
+    </div>
+  );
+};
+
+export default Home;
+
 import React from 'react';
 import './LoginPage.css'; // Optional, if you want to add custom styles
 
