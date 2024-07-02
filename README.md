@@ -1,5 +1,66 @@
 ```
 
+<div className="dashboard-card-header">
+  <h4 className="dashboard-card-title">Customer Count by State</h4>
+  <InfoIcon message="This chart shows the customer concentration in each state." />
+</div>
+<Bar
+  width="70%"
+  height="100%"
+  data={productPartyStateData}
+  plugins={[YAxisLabelClickPlugin]}
+  options={{
+    responsive: true,
+    indexAxis: 'y',
+    categoryPercentage: 0.9,
+    barPercentage: 0.9,
+    onYAxisLabelClick: handleYAxisLabelClick,
+    scales: {
+      y: {
+        stacked: true,
+        ticks: {
+          autoSkip: false,
+          maxTicksLimit: 25, // Limit the number of ticks to 25
+        },
+        title: {
+          display: true,
+          text: 'State Name',
+        },
+      },
+      x: {
+        stacked: true,
+        title: {
+          display: true,
+          text: 'Customer Count',
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        position: 'bottom',
+      },
+      tooltip: {
+        callbacks: {
+          title: (ctx) => `${usStatesJson[ctx[0].label]}`,
+        },
+      },
+    },
+    // Add the scrolling configuration
+    maintainAspectRatio: false,
+    responsive: true,
+    layout: {
+      padding: {
+        top: 10,
+        bottom: 10,
+      },
+    },
+  }}
+/>
+
+
+
+
+
 .home-container {
   display: flex;
   flex-direction: column;
