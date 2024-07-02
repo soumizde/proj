@@ -1,4 +1,62 @@
 ```
+<div className="dashboard-card-header">
+  <h4 className="dashboard-card-title">Customer Count by State</h4>
+  <InfoIcon message="This chart shows the customer concentration in each state." />
+</div>
+<div style={{ height: '500px', overflowY: 'scroll' }}> {/* Make this div scrollable */}
+  <Bar
+    width="70%"
+    height="2000px"  {/* Increase the height to accommodate more bars */}
+    data={productPartyStateData}
+    plugins={[YAxisLabelClickPlugin]}
+    options={{
+      responsive: true,
+      indexAxis: 'y',
+      categoryPercentage: 0.7,  {/* Adjust for more spacing */}
+      barPercentage: 0.7,  {/* Adjust for more spacing */}
+      onYAxisLabelClick: handleYAxisLabelClick,
+      scales: {
+        y: {
+          stacked: true,
+          ticks: {
+            autoSkip: false,
+            maxTicksLimit: 25, // Limit the number of ticks to 25
+          },
+          title: {
+            display: true,
+            text: 'State Name',
+          },
+        },
+        x: {
+          stacked: true,
+          title: {
+            display: true,
+            text: 'Customer Count',
+          },
+        },
+      },
+      plugins: {
+        legend: {
+          position: 'bottom',
+        },
+        tooltip: {
+          callbacks: {
+            title: (ctx) => `${usStatesJson[ctx[0].label]}`,
+          },
+        },
+      },
+      maintainAspectRatio: false,
+      layout: {
+        padding: {
+          top: 10,
+          bottom: 10,
+        },
+      },
+    }}
+  />
+</div>
+
+
 
 <div className="dashboard-card-header">
   <h4 className="dashboard-card-title">Customer Count by State</h4>
